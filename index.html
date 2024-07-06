@@ -41,7 +41,7 @@
 	<div id="threejs-container"></div>
 
     <script>
-let eiffelModel = null;
+        let eiffelModel = null;
         let walkingModel = null;
         let detectionStopped = false;
         let modelLoaded = false;
@@ -143,6 +143,12 @@ let eiffelModel = null;
                 if (mixer) mixer.update(delta); // Update the animation mixer
 
                 const distance = model.position.distanceTo(targetPosition);
+// Assuming `model` is your 3D object
+var eiffelModelPosition = eiffelModel.position;
+console.log(`Eiffel Model position: x = ${eiffelModelPosition.x}, y = ${eiffelModelPosition.y}, z = ${eiffelModelPosition.z}`);
+
+var walkingModelPosition = walkingModel.position;
+console.log(`Walking Model position: x = ${walkingModelPosition.x}, y = ${walkingModelPosition.y}, z = ${walkingModelPosition.z}`);
 
                 if (distance > stopDistance) {
                     const direction = new THREE.Vector3().subVectors(targetPosition, model.position).normalize();
