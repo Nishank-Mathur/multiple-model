@@ -150,6 +150,7 @@
                 const distance = walkingModel.position.distanceTo(targetPosition);	
 
                 if (distance > stopDistance) {
+			console.log('check code');
                 //    const direction = new THREE.Vector3().subVectors(targetPosition, walkingModel.position).normalize();
                   //  walkingModel.position.add(direction.multiplyScalar(walkSpeed));
                 } else if (animationRunning) { // Ensure this block executes only once
