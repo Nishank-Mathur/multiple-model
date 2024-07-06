@@ -142,13 +142,18 @@
                 const delta = clock.getDelta(); // Time between frames
                 if (mixer) mixer.update(delta); // Update the animation mixer
 
+		     console.log(targetPosition);
                 const distance = walkingModel.position.distanceTo(targetPosition);
-// Assuming `model` is your 3D object
-var eiffelModelPosition = eiffelModel.position;
-console.log(`Eiffel Model position: x = ${eiffelModelPosition.x}, y = ${eiffelModelPosition.y}, z = ${eiffelModelPosition.z}`);
 
+		   
+		    
+// `Eiffel model Position`
+var eiffelModelPosition = eiffelModel.position;
+//console.log(`Eiffel Model position: x = ${eiffelModelPosition.x}, y = ${eiffelModelPosition.y}, z = ${eiffelModelPosition.z}`);
+
+// `Walking model Position`
 var walkingModelPosition = walkingModel.position;
-console.log(`Walking Model position: x = ${walkingModelPosition.x}, y = ${walkingModelPosition.y}, z = ${walkingModelPosition.z}`);
+//console.log(`Walking Model position: x = ${walkingModelPosition.x}, y = ${walkingModelPosition.y}, z = ${walkingModelPosition.z}`);
 
                 if (distance > stopDistance) {
                     const direction = new THREE.Vector3().subVectors(targetPosition, walkingModel.position).normalize();
