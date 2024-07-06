@@ -41,11 +41,10 @@
 	<div id="threejs-container"></div>
 
     <script>
-
- let currentModel = null;
-        let secondModel = null;
+let eiffelModel = null;
+        let walkingModel = null;
         let detectionStopped = false;
-        let modelcall = false;
+        let modelLoaded = false;
         let mixer = null;
         const clock = new THREE.Clock();
 
@@ -78,36 +77,35 @@
 
             const loader = new THREE.GLTFLoader();
             loader.load('3d-model/eiffel_tower-old.glb', function (gltf) {
-                if (currentModel) {
-                    scene.remove(currentModel);
-                    currentModel = null;
+                if (eiffelModel) {
+                    scene.remove(eiffelModel);
+                    eiffelModel = null;
                 }
 
-                const model = gltf.scene;
-                model.position.set(0, -5, -6);
-                model.scale.set(0.5, 0.5, 0.5);
-                scene.add(model);
-                currentModel = model;
+                eiffelModel = gltf.scene;
+                eiffelModel.position.set(0, -5, -6);
+                eiffelModel.scale.set(0.5, 0.5, 0.5);
+                scene.add(eiffelModel);
 
                 let scale = 0.5;
                 const minScale = 0.1;
                 const scaleStep = 0.001;
 
-                function animate(camera, renderer) {
-                    requestAnimationFrame(() => animate(camera, renderer));
+                function animate() {
+                    requestAnimationFrame(animate);
 
                     if (scale > minScale) {
                         scale -= scaleStep;
-                        model.scale.set(scale, scale, scale);
+                        eiffelModel.scale.set(scale, scale, scale);
                     } else {
-                        if (!secondModel) {
-                            loadSecondModel(scene, model.position, camera, renderer);
+                        if (!walkingModel) {
+                            loadSecondModel(scene, eiffelModel.position, camera, renderer);
                         }
                     }
 
                     renderer.render(scene, camera);
                 }
-                animate(camera, renderer);
+                animate();
             });
 
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -115,55 +113,54 @@
         }
 
         function loadSecondModel(scene, targetPosition, camera, renderer) {
-            if (modelcall) return;
+            if (modelLoaded) return;
             const loader = new THREE.GLTFLoader();
             loader.load('3d-model/start_walking.glb', function (gltf) {
-                const model = gltf.scene;
-                model.position.set(0, -7, -20); // Start position behind the first model
-                model.scale.set(2, 2, 2);
-                scene.add(model);
-                secondModel = model;
+                walkingModel = gltf.scene;
+                walkingModel.position.set(0, -7, -20); // Start position behind the first model
+                walkingModel.scale.set(2, 2, 2);
+                scene.add(walkingModel);
 
-                mixer = new THREE.AnimationMixer(model);
+                mixer = new THREE.AnimationMixer(walkingModel);
                 const action = mixer.clipAction(gltf.animations[0]); // Assuming the walking animation is the first animation clip
                 action.play();
 
-                animateWalkTowards(model, targetPosition, scene, camera, renderer);
+                animateWalkTowards(walkingModel, targetPosition, scene, camera, renderer);
             });
-            modelcall = true;
+            modelLoaded = true;
         }
 
-function animateWalkTowards(model, targetPosition, scene, camera, renderer) {
-    const walkSpeed = 0.05; // Increased speed for better visual effect
-    const stopDistance = 0.5;
-    let animationRunning = true;
+        function animateWalkTowards(model, targetPosition, scene, camera, renderer) {
+            const walkSpeed = 0.05; // Increased speed for better visual effect
+            const stopDistance = 0.5;
+            let animationRunning = true;
 
-    function animate() {
-        if (!animationRunning) return; // Check if animation should still run
-        requestAnimationFrame(animate);
+            function animate() {
+                if (!animationRunning) return; // Check if animation should still run
+                requestAnimationFrame(animate);
 
-        const delta = clock.getDelta(); // Time between frames
-        if (mixer) mixer.update(delta); // Update the animation mixer
+                const delta = clock.getDelta(); // Time between frames
+                if (mixer) mixer.update(delta); // Update the animation mixer
 
-        const distance = model.position.distanceTo(targetPosition);
+                const distance = model.position.distanceTo(targetPosition);
 
-        if (distance > stopDistance) {
-            const direction = new THREE.Vector3().subVectors(targetPosition, model.position).normalize();
-            model.position.add(direction.multiplyScalar(walkSpeed));
-        } else if (animationRunning) { // Ensure this block executes only once
-            console.log("Second model reached the first model.");
-            // Stopping the animation and movement
-            animationRunning = false; // Stop further animation updates
-            if (mixer) {
-                mixer.stopAllAction(); // Stop all animations
+                if (distance > stopDistance) {
+                    const direction = new THREE.Vector3().subVectors(targetPosition, model.position).normalize();
+                    model.position.add(direction.multiplyScalar(walkSpeed));
+                } else if (animationRunning) { // Ensure this block executes only once
+                    console.log("Second model reached the first model.");
+                    // Stopping the animation and movement
+                    animationRunning = false; // Stop further animation updates
+                    if (mixer) {
+                        mixer.stopAllAction(); // Stop all animations
+                    }
+                    model.position.copy(targetPosition); // Ensure the model is exactly at the target position
+                }
+
+                renderer.render(scene, camera);
             }
-            model.position.copy(targetPosition); // Ensure the model is exactly at the target position
+            animate();
         }
-
-        renderer.render(scene, camera);
-    }
-    animate();
-}
     </script>
 </body>
 </html>
