@@ -150,7 +150,7 @@
 
                 if (distance > stopDistance) {
                     const direction = new THREE.Vector3().subVectors(targetPosition, walkingModel.position).normalize();
-                    walkingModel.position.add(direction.multiplyScalar(walkSpeed));
+                   // walkingModel.position.add(direction.multiplyScalar(walkSpeed));
                 } else if (animationRunning) { // Ensure this block executes only once
                     console.log("Second model reached the first model.");
                     // Stopping the animation and movement
