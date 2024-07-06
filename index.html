@@ -130,7 +130,7 @@
             modelLoaded = true;
         }
 
-        function animateWalkTowards(model, targetPosition, scene, camera, renderer) {
+        function animateWalkTowards(walkingModel, targetPosition, scene, camera, renderer) {
             const walkSpeed = 0.05; // Increased speed for better visual effect
             const stopDistance = 0.5;
             let animationRunning = true;
@@ -142,7 +142,7 @@
                 const delta = clock.getDelta(); // Time between frames
                 if (mixer) mixer.update(delta); // Update the animation mixer
 
-                const distance = model.position.distanceTo(targetPosition);
+                const distance = walkingModel.position.distanceTo(targetPosition);
 // Assuming `model` is your 3D object
 var eiffelModelPosition = eiffelModel.position;
 console.log(`Eiffel Model position: x = ${eiffelModelPosition.x}, y = ${eiffelModelPosition.y}, z = ${eiffelModelPosition.z}`);
@@ -151,8 +151,8 @@ var walkingModelPosition = walkingModel.position;
 console.log(`Walking Model position: x = ${walkingModelPosition.x}, y = ${walkingModelPosition.y}, z = ${walkingModelPosition.z}`);
 
                 if (distance > stopDistance) {
-                    const direction = new THREE.Vector3().subVectors(targetPosition, model.position).normalize();
-                    model.position.add(direction.multiplyScalar(walkSpeed));
+                    const direction = new THREE.Vector3().subVectors(targetPosition, walkingModel.position).normalize();
+                    walkingModel.position.add(direction.multiplyScalar(walkSpeed));
                 } else if (animationRunning) { // Ensure this block executes only once
                     console.log("Second model reached the first model.");
                     // Stopping the animation and movement
@@ -160,7 +160,7 @@ console.log(`Walking Model position: x = ${walkingModelPosition.x}, y = ${walkin
                     if (mixer) {
                         mixer.stopAllAction(); // Stop all animations
                     }
-                    model.position.copy(targetPosition); // Ensure the model is exactly at the target position
+                    walkingModel.position.copy(targetPosition); // Ensure the walkingModel is exactly at the target position
                 }
 
                 renderer.render(scene, camera);
