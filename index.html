@@ -125,11 +125,9 @@
                 const action = mixer.clipAction(gltf.animations[0]); // Assuming the walking animation is the first animation clip
                 action.play();
 
-		// Define the target position for the walking model
-                 const targetPosition = new THREE.Vector3(0, -5, -5);    
-
-		    console.log(targetPosition);
-
+// Define the target position for the walking model
+            const targetPosition = new THREE.Vector3(0, -5, -5);
+		    
                 animateWalkTowards(walkingModel, targetPosition, scene, camera, renderer);
             });
             modelLoaded = true;
@@ -147,7 +145,7 @@
                 const delta = clock.getDelta(); // Time between frames
                 if (mixer) mixer.update(delta); // Update the animation mixer
 
-		     console.log(targetPosition);
+		//console.log(targetPosition);
                 const distance = walkingModel.position.distanceTo(targetPosition);
 
 		   
