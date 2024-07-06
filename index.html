@@ -149,8 +149,8 @@
             const distance = walkingModel.position.distanceTo(targetPosition);
 
             if (distance > stopDistance) {
-                const direction = new THREE.Vector3().subVectors(targetPosition, walkingModel.position).normalize();
-                walkingModel.position.add(direction.multiplyScalar(walkSpeed));
+              //  const direction = new THREE.Vector3().subVectors(targetPosition, walkingModel.position).normalize();
+              //  walkingModel.position.add(direction.multiplyScalar(walkSpeed));
             } else {
                 console.log("Second model reached the first model.");
                 animationRunning = false; // Stop further animation updates
