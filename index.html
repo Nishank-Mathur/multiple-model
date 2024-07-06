@@ -139,32 +139,29 @@
             const stopDistance = 0.5;
             let animationRunning = true;
 
-            function animate() {
-                if (!animationRunning) return; // Check if animation should still run
-                requestAnimationFrame(animate);
+        function animate() {
+            if (!animationRunning) return; // Check if animation should still run
+            requestAnimationFrame(animate);
 
-                const delta = clock.getDelta(); // Time between frames
-                if (mixer) mixer.update(delta); // Update the animation mixer
+            const delta = clock.getDelta(); // Time between frames
+            if (mixer) mixer.update(delta); // Update the animation mixer
 
-		//console.log(targetPosition);
-                const distance = walkingModel.position.distanceTo(targetPosition);	
+            const distance = walkingModel.position.distanceTo(targetPosition);
 
-                if (distance > stopDistance) {
-			console.log('check code');
-                //    const direction = new THREE.Vector3().subVectors(targetPosition, walkingModel.position).normalize();
-                  //  walkingModel.position.add(direction.multiplyScalar(walkSpeed));
-                } else if (animationRunning) { // Ensure this block executes only once
-                    console.log("Second model reached the first model.");
-                    // Stopping the animation and movement
-                    animationRunning = false; // Stop further animation updates
-                    if (mixer) {
-                        mixer.stopAllAction(); // Stop all animations
-                    }
-                    walkingModel.position.copy(targetPosition); // Ensure the walkingModel is exactly at the target position
+            if (distance > stopDistance) {
+                const direction = new THREE.Vector3().subVectors(targetPosition, walkingModel.position).normalize();
+                walkingModel.position.add(direction.multiplyScalar(walkSpeed));
+            } else {
+                console.log("Second model reached the first model.");
+                animationRunning = false; // Stop further animation updates
+                if (mixer) {
+                    mixer.stopAllAction(); // Stop all animations
                 }
-
-                renderer.render(scene, camera);
+                walkingModel.position.copy(targetPosition); // Ensure the walkingModel is exactly at the target position
             }
+
+            renderer.render(scene, camera);
+        }
             animate();
         }
     </script>
