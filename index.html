@@ -125,7 +125,7 @@
                 const action = mixer.clipAction(gltf.animations[0]); // Assuming the walking animation is the first animation clip
                 action.play();
 
-// Define the target position for the walking model
+           // Define the target position for the walking model
             const targetPosition = new THREE.Vector3(0, -5, -5);
 		    
                 animateWalkTowards(walkingModel, targetPosition, scene, camera, renderer);
@@ -146,17 +146,7 @@
                 if (mixer) mixer.update(delta); // Update the animation mixer
 
 		//console.log(targetPosition);
-                const distance = walkingModel.position.distanceTo(targetPosition);
-
-		   
-		    
-// `Eiffel model Position`
-var eiffelModelPosition = eiffelModel.position;
-//console.log(`Eiffel Model position: x = ${eiffelModelPosition.x}, y = ${eiffelModelPosition.y}, z = ${eiffelModelPosition.z}`);
-
-// `Walking model Position`
-var walkingModelPosition = walkingModel.position;
-//console.log(`Walking Model position: x = ${walkingModelPosition.x}, y = ${walkingModelPosition.y}, z = ${walkingModelPosition.z}`);
+                const distance = walkingModel.position.distanceTo(targetPosition);	
 
                 if (distance > stopDistance) {
                     const direction = new THREE.Vector3().subVectors(targetPosition, walkingModel.position).normalize();
