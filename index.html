@@ -125,6 +125,11 @@
                 const action = mixer.clipAction(gltf.animations[0]); // Assuming the walking animation is the first animation clip
                 action.play();
 
+		// Define the target position for the walking model
+                 const targetPosition = new THREE.Vector3(0, -5, -5);    
+
+		    console.log(targetPosition);
+
                 animateWalkTowards(walkingModel, targetPosition, scene, camera, renderer);
             });
             modelLoaded = true;
